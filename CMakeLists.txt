@@ -17,3 +17,7 @@ include_directories(${SDL2_INCLUDE_DIRS} src/snake src/pong)
 add_executable(SnakeGame src/snake/main.cpp src/snake/game.cpp src/snake/controller.cpp src/snake/renderer.cpp src/snake/snake.cpp)
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
+
+add_executable(PongGame src/pong/main.cpp src/pong/game.cpp src/pong/controller.cpp src/pong/renderer.cpp src/pong/ball.cpp src/pong/paddle.cpp src/pong/pongObject.cpp src/pong/wall.cpp)
+# string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
+target_link_libraries(PongGame ${SDL2_LIBRARIES})
