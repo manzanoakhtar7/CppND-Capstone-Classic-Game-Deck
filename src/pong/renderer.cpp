@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Paddle const leftPaddle, Paddle const rightPaddle, Ball const ball, Wall topWall, Wall bottomWall) {
+void Renderer::Render(const Paddle &leftPaddle, const Paddle &rightPaddle, const Ball &ball, const Wall &topWall, const Wall &bottomWall) {
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);

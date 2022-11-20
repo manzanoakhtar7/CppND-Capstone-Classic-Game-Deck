@@ -3,15 +3,14 @@
 #include "SDL.h"
 
 Game::Game(std::size_t gridWidth, std::size_t gridHeight, std::size_t screenWidth, std::size_t screenHeight)
-  : ball_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, 0.5),
-  leftPaddle_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, gridHeight/4, 2.0, left),
-  rightPaddle_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, gridHeight/4, 2.0, right),
+  : ball_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, 12.0),
+  leftPaddle_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, gridHeight/4, 16.0, left),
+  rightPaddle_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, gridHeight/4, 16.0, right),
   topWall_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, top),
   bottomWall_(gridWidth, gridHeight, screenWidth/gridWidth, screenHeight/gridHeight, bottom),
   blockWidth_(screenWidth/gridWidth),
   blockHeight_(screenHeight/gridHeight),
-  engine_(dev_()),
-  randomServe_(0, static_cast<int>(gridWidth - 1)) {}
+  screenWidth_(screenWidth) {}
 
 void Game::Run(Controller const &controller, Renderer &renderer,
                 std::size_t targetFrameDuration) {
@@ -22,13 +21,18 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frameCount = 0;
   bool running = true;
   std::cout << "Game Starting!\n";
+  ball_.Reset();
   while (running) {
     frameStart = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running);
+    controller.HandleInput(running, leftPaddle_, rightPaddle_);
     Update();
     renderer.Render(leftPaddle_, rightPaddle_, ball_, topWall_, bottomWall_);
+
+    if ((score_.rightScore >= 10) || (score_.leftScore >= 10)) {
+      running = false;
+    }
 
     frameEnd = SDL_GetTicks();
 
@@ -54,5 +58,15 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 }
 
 void Game::Update() {
-  std::cout << "Update!\n";
+  leftPaddle_.Update(topWall_, bottomWall_);
+  rightPaddle_.Update(topWall_, bottomWall_);
+  ball_.Update(leftPaddle_, rightPaddle_, topWall_, bottomWall_);
+  int ballX = ball_.GetObject()->x;
+  if (ballX < 0) {
+    score_.rightScore += 1;
+    ball_.Reset();
+  } else if (ballX > screenWidth_) {
+    score_.leftScore += 1;
+    ball_.Reset();
+  }
 }

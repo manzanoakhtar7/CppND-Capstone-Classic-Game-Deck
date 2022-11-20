@@ -10,7 +10,7 @@ class PongObject {
     SDL_Rect* GetObject() { return &object_; };
     bool IsCollidingWith(PongObject *aOther);
     void Render(SDL_Renderer *sdl_renderer) const;
-  private:
+  protected:
     SDL_Rect object_;
 };
 

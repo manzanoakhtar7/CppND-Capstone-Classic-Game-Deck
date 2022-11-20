@@ -18,7 +18,7 @@ class Renderer {
             const std::size_t grid_width, const std::size_t grid_height);
     ~Renderer();
 
-    void Render(Paddle const leftPaddle, Paddle const rightPaddle, Ball const ball, Wall topWall, Wall bottomWall);
+    void Render(const Paddle &leftPaddle, const Paddle &rightPaddle, const Ball &ball, const Wall &topWall, const Wall &bottomWall);
     void UpdateWindowTitle(Score score, int fps);
 
   private:

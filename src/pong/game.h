@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <random>
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
@@ -33,10 +32,7 @@ class Game {
 
     int blockWidth_;
     int blockHeight_;
-
-    std::random_device dev_;
-    std::mt19937 engine_;
-    std::uniform_int_distribution<int> randomServe_;
+    int screenWidth_;
 
     Score score_;
 
